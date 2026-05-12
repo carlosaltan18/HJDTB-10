@@ -21,21 +21,15 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Graph graph = new Graph();
 
-        // ── Cargar archivo ────────────────────────────────────────
-        System.out.print("Nombre del archivo del grafo [guategrafo.txt]: ");
-        String filename = sc.nextLine().trim();
-        if (filename.isEmpty()) filename = "guategrafo.txt";
-
+        String filename = "guategrafo.txt";
         loadFromFile(graph, filename);
 
         System.out.println("\n--- Matriz de Adyacencia inicial ---");
         graph.printMatrix();
 
-        // ── Primera ejecución de Floyd ────────────────────────────
         Floyd floyd = new Floyd(graph);
         floyd.compute();
 
-        // ── Menú principal ────────────────────────────────────────
         boolean running = true;
         while (running) {
             printMenu();
@@ -151,34 +145,34 @@ public class Main {
 
 
     private static void loadFromFile(Graph graph, String filename) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+        String rutaRaiz = System.getProperty("user.dir");
+        File archivo = new File(rutaRaiz, filename);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String line;
             int count = 0;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
-                if (line.isEmpty() || line.startsWith("#")) continue;   // saltar comentarios
+                if (line.isEmpty() || line.startsWith("#")) continue;
+
                 String[] parts = line.split("\\s+");
-                if (parts.length < 3) {
-                    System.out.println("  Línea ignorada (formato incorrecto): " + line);
-                    continue;
-                }
+                if (parts.length < 3) continue;
+
                 String city1 = parts[0];
                 String city2 = parts[1];
                 double km;
                 try {
                     km = Double.parseDouble(parts[2]);
                 } catch (NumberFormatException e) {
-                    System.out.println("  Línea ignorada (KM no es número): " + line);
                     continue;
                 }
                 graph.addEdgeWithCities(city1, city2, km);
                 count++;
             }
-            System.out.println("Grafo cargado: " + graph.size()
-                    + " ciudades, " + count + " arcos desde \"" + filename + "\".");
+            System.out.println("✔ Archivo '" + filename + "' cargado automáticamente desde la raíz.");
+            System.out.println("  Info: " + graph.size() + " ciudades y " + count + " arcos detectados.");
         } catch (FileNotFoundException e) {
-            System.out.println("  ✖ Archivo no encontrado: " + filename);
-            System.out.println("  Continuando con grafo vacío...");
+            System.out.println("  ✖ Error: No se encontró el archivo '" + filename + "' en " + archivo.getAbsolutePath());
         } catch (IOException e) {
             System.out.println("  ✖ Error al leer el archivo: " + e.getMessage());
         }
