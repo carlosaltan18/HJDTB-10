@@ -4,34 +4,23 @@ import java.util.*;
 
 /**
  * Floyd – Implementación del algoritmo de Floyd-Warshall.
+ * @Author Carlos Altán
  *
- * Calcula:
- *   • Matriz de distancias mínimas entre cualquier par de vértices.
- *   • Reconstrucción del camino más corto (con ciudades intermedias).
- *   • Centro del grafo (vértice de mínima excentricidad).
- *
- * CC2003 – Algoritmos y Estructura de Datos
- * Hoja de Trabajo No. 10
  */
 public class Floyd {
 
-    private double[][]  dist;   // dist[i][j] = distancia mínima i → j
-    private int[][]     next;   // next[i][j] = siguiente nodo en el camino i → j
+    private double[][]  dist;
+    private int[][]     next;
     private final Graph graph;
 
-    // ─────────────────────────────────────────
-    // Constructor
-    // ─────────────────────────────────────────
     public Floyd(Graph graph) {
         this.graph = graph;
     }
 
-    // ─────────────────────────────────────────
-    // Algoritmo de Floyd-Warshall  O(n³)
-    // ─────────────────────────────────────────
+
     /**
      * Ejecuta Floyd-Warshall sobre el grafo actual.
-     * Debe llamarse (o re-llamarse) cada vez que el grafo cambia.
+     * Debe llamarse cada vez que el grafo cambia.
      */
     public void compute() {
         int n = graph.size();
@@ -41,16 +30,13 @@ public class Floyd {
         dist = new double[n][n];
         next = new int[n][n];
 
-        // Inicialización: copiar adyacencias y configurar 'next'
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 dist[i][j] = adj[i][j];
-                // Si existe arco i→j (y no es el mismo nodo), next apunta a j
                 next[i][j] = (i != j && adj[i][j] < Graph.INF) ? j : -1;
             }
         }
 
-        // Triple ciclo  k = nodo intermedio
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
@@ -58,20 +44,16 @@ public class Floyd {
                         double through = dist[i][k] + dist[k][j];
                         if (through < dist[i][j]) {
                             dist[i][j] = through;
-                            next[i][j] = next[i][k];   // redirigir camino
+                            next[i][j] = next[i][k];
                         }
                     }
                 }
             }
         }
     }
-
-    // ─────────────────────────────────────────
-    // Consultas de distancia
-    // ─────────────────────────────────────────
     /**
      * @return distancia mínima de 'from' a 'to'.
-     *         Graph.INF si no existe camino o alguna ciudad es desconocida.
+     * Graph.INF si no existe camino o alguna ciudad es desconocida.
      */
     public double getDistance(String from, String to) {
         Map<String, Integer> idx = graph.getIndexMap();
@@ -79,12 +61,9 @@ public class Floyd {
         return dist[idx.get(from)][idx.get(to)];
     }
 
-    // ─────────────────────────────────────────
-    // Reconstrucción del camino
-    // ─────────────────────────────────────────
+
     /**
-     * Reconstruye el camino más corto de 'from' a 'to'.
-     *
+     * Reconstruye el camino más corto de 'from' a 'to'
      * @return Lista de ciudades desde origen hasta destino (incluidos).
      *         Lista vacía si no existe camino.
      */
@@ -110,13 +89,10 @@ public class Floyd {
         return path;
     }
 
-    // ─────────────────────────────────────────
-    // Excentricidad de un vértice
-    // ─────────────────────────────────────────
+
     /**
      * La excentricidad del vértice i es la mayor distancia desde i
      * hacia cualquier otro vértice alcanzable.
-     *
      * @return arreglo de excentricidades, uno por ciudad (mismo orden que graph.getCities()).
      */
     public double[] getEccentricities() {
@@ -132,18 +108,8 @@ public class Floyd {
         return ecc;
     }
 
-    // ─────────────────────────────────────────
-    // Centro del grafo
-    // ─────────────────────────────────────────
     /**
      * El centro del grafo es el vértice con menor excentricidad.
-     * (Algoritmo descrito en CentroDeGrafo.pdf)
-     *
-     * Pasos:
-     *   1. Aplicar Floyd → dist (ya hecho en compute()).
-     *   2. Para cada columna i, tomar el máximo → excentricidad(i).
-     *   3. El vértice con mínima excentricidad es el centro.
-     *
      * @return nombre de la ciudad centro, o null si el grafo está vacío.
      */
     public String getCenter() {
@@ -165,15 +131,12 @@ public class Floyd {
         return center;
     }
 
-    // ─────────────────────────────────────────
-    // Acceso a matrices internas (para pruebas)
-    // ─────────────────────────────────────────
+
+    // Acceso a matrices internas
     public double[][] getDist() { return dist; }
     public int[][]    getNext() { return next; }
 
-    // ─────────────────────────────────────────
-    // Imprimir la APSP (All-Pairs Shortest Path)
-    // ─────────────────────────────────────────
+    // Imprimir la APSP
     public void printDistMatrix() {
         List<String> cities = graph.getCities();
         int n = cities.size();

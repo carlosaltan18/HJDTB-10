@@ -3,31 +3,23 @@ import java.util.*;
 
 /**
  * Graph – Grafo dirigido ponderado con Matriz de Adyacencia dinámica.
- *
- * CC2003 – Algoritmos y Estructura de Datos
- * Hoja de Trabajo No. 10
+ * @Author Carlos Altán
  */
 public class Graph {
 
     /** Valor usado para representar "sin arco" / distancia infinita */
     public static final double INF = Double.MAX_VALUE / 2;
 
-    private double[][]          matrix;   // Matriz de adyacencia
-    private final Map<String, Integer> indexMap; // ciudad → índice
-    private final List<String>  cities;   // índice → ciudad
+    private double[][]          matrix;
+    private final Map<String, Integer> indexMap;
+    private final List<String>  cities;
 
-    // ─────────────────────────────────────────
-    // Constructor
-    // ─────────────────────────────────────────
     public Graph() {
         indexMap = new LinkedHashMap<>();
         cities   = new ArrayList<>();
         matrix   = new double[0][0];
     }
 
-    // ─────────────────────────────────────────
-    // Agregar ciudad (nodo)
-    // ─────────────────────────────────────────
     /**
      * Agrega una ciudad al grafo.
      * Si ya existe, no hace nada (sin excepción).
@@ -39,7 +31,6 @@ public class Graph {
         indexMap.put(city, n);
         cities.add(city);
 
-        // Redimensionar matriz a (n+1) x (n+1)
         double[][] m = new double[n + 1][n + 1];
         for (int i = 0; i <= n; i++)
             for (int j = 0; j <= n; j++)
@@ -49,13 +40,10 @@ public class Graph {
         matrix = m;
     }
 
-    // ─────────────────────────────────────────
-    // Agregar arco
-    // ─────────────────────────────────────────
+
     /**
      * Agrega un arco dirigido from → to con el peso dado.
      * Las ciudades deben existir previamente.
-     *
      * @return true si el arco se agregó; false si alguna ciudad no existe.
      */
     public boolean addEdge(String from, String to, double weight) {
@@ -74,9 +62,6 @@ public class Graph {
         addEdge(from, to, weight);
     }
 
-    // ─────────────────────────────────────────
-    // Eliminar arco  (cordón sanitario / derrumbe)
-    // ─────────────────────────────────────────
     /**
      * Elimina el arco from → to (lo pone en INF).
      *
@@ -88,9 +73,7 @@ public class Graph {
         return true;
     }
 
-    // ─────────────────────────────────────────
-    // Consultas
-    // ─────────────────────────────────────────
+
     public boolean          hasCity(String city)  { return indexMap.containsKey(city); }
     public int              size()                { return cities.size(); }
     public double[][]       getMatrix()           { return matrix; }
