@@ -1,0 +1,56 @@
+# guategrafo.txt – Red vial simplificada de Guatemala
+# Formato: Ciudad1 Ciudad2 KM  (grafo con dirección)
+# Información de referencia – Hoja de Trabajo No. 10 CC2003
+
+# ── Región Metropolitana ─────────────────────────────
+Guatemala  Mixco        15
+Mixco      Guatemala    15
+Guatemala  Antigua      45
+Antigua    Guatemala    45
+Guatemala  Escuintla    60
+Mixco      Antigua      30
+Antigua    Mixco        30
+Antigua    Escuintla    55
+Escuintla  Antigua      55
+
+# ── Región Sur ───────────────────────────────────────
+Escuintla  Mazatenango  75
+Mazatenango Escuintla   75
+Mazatenango Quetzaltenango 45
+Quetzaltenango Mazatenango 45
+Escuintla  SantaLucia   20
+SantaLucia Escuintla    20
+
+# ── Región Occidente ─────────────────────────────────
+Antigua         Chimaltenango   20
+Chimaltenango   Antigua         20
+Chimaltenango   Quetzaltenango  90
+Quetzaltenango  Chimaltenango   90
+Quetzaltenango  Huehuetenango   100
+Huehuetenango   Quetzaltenango  100
+Quetzaltenango  SanMarcos       60
+SanMarcos       Quetzaltenango  60
+
+# ── Región Oriente ───────────────────────────────────
+Guatemala  Jalapa       90
+Jalapa     Guatemala    90
+Jalapa     Jutiapa      60
+Jutiapa    Jalapa       60
+Guatemala  Zacapa       150
+Zacapa     Guatemala    150
+Zacapa     Izabal       80
+Izabal     Zacapa       80
+
+# ── Región Norte ─────────────────────────────────────
+Guatemala  Coban        220
+Coban      Guatemala    220
+Coban      AltaVerapaz  30
+AltaVerapaz Coban       30
+Coban      Peten        200
+Peten      Coban        200
+
+# ── Conexiones extra ─────────────────────────────────
+Jutiapa    ElProgreso   80
+ElProgreso Jutiapa      80
+Zacapa     ElProgreso   55
+ElProgreso Zacapa       55
